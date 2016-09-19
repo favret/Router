@@ -8,9 +8,9 @@
 
 import UIKit
 
-public class CustomSegue: UIStoryboardSegue {
+open class CustomSegue: UIStoryboardSegue {
   
-  public override func perform() {
+  open override func perform() {
     print("perform custom")
   }
 }

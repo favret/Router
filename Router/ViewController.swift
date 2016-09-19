@@ -22,13 +22,13 @@ class ViewController: UIViewController {
     // Dispose of any resources that can be recreated.
   }
 
-  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     print(segue.identifier)
   }
   
-  @IBAction func buttonAction(sender:AnyObject?) {
+  @IBAction func buttonAction(_ sender:AnyObject?) {
     let router = Router()
-    let url = NSURL(string: "route://Main/TestViewController#push")
+    let url = URL(string: "route://Main/TestViewController#push")
     router.perform(url!)
     
     //router.perform(url!, sender: self)

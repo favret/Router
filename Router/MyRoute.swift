@@ -9,29 +9,29 @@
 import Foundation
 
 public enum Route: RouteType {
-  case Test
+  case test
   
   public var identifier: String {
     switch self {
-    case .Test: return "testSegue"
+    case .test: return "testSegue"
     }
   }
   
   public var storyboardName: String {
     switch self {
-    case .Test: return "Main"
+    case .test: return "Main"
     }
   }
   
   public var viewControllerIdentifier: String {
     switch self {
-    case .Test: return "TestViewController"
+    case .test: return "TestViewController"
     }
   }
   
   public var kindOfSegue: Router.KindOfSegue {
     switch self {
-    case .Test: return .Push
+    case .test: return .Push
     }
   }
 }

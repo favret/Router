@@ -47,8 +47,8 @@ extension RouteType {
   /**
    convert the current RouteType to an NSURL who respect generic URIs. (exemple: router://Main/viewControllerIdentifier#push)
    */
-  var url:NSURL {
-    return (NSURLComponents.init(string: "route://\(self.storyboardName)/\(self.viewControllerIdentifier)#\(self.kindOfSegue.rawValue)")?.URL)!
+  var url:URL {
+    return (URLComponents.init(string: "route://\(self.storyboardName)/\(self.viewControllerIdentifier)#\(self.kindOfSegue.rawValue)")?.url)!
   }
 }
 
@@ -61,14 +61,14 @@ extension UIWindow {
     return nil
   }
   
-  class func getVisibleViewControllerFrom(vc:UIViewController) -> UIViewController {
+  class func getVisibleViewControllerFrom(_ vc:UIViewController) -> UIViewController {
     
-    if vc.isKindOfClass(UINavigationController.self) {
+    if vc.isKind(of: UINavigationController.self) {
       
       let navigationController = vc as! UINavigationController
       return UIWindow.getVisibleViewControllerFrom( navigationController.visibleViewController!)
       
-    } else if vc.isKindOfClass(UITabBarController.self) {
+    } else if vc.isKind(of: UITabBarController.self) {
       
       let tabBarController = vc as! UITabBarController
       return UIWindow.getVisibleViewControllerFrom(tabBarController.selectedViewController!)
@@ -87,7 +87,7 @@ extension UIWindow {
   }
 }
 
-public class Router {
+open class Router {
  
   /**
    */
@@ -113,8 +113,8 @@ public class Router {
    
    - parameter sender: The object that you want to use to initiate the segue. If nil then the source of Segue if the top visible UIViewController.
    */
-  public func perform(urlString: String, sender: AnyObject? = nil) {
-    guard let url = NSURL(string: urlString)
+  open func perform(_ urlString: String, sender: AnyObject? = nil) {
+    guard let url = URL(string: urlString)
       else { return }
     
     self.perform(url, sender: sender, segueClass: UIStoryboardSegue.self)
@@ -134,8 +134,8 @@ public class Router {
    
    - parameter segueClass: the UIStoryboardSegue than you want to use to perform the Segue
    */
-  public func perform(urlString: String, sender: AnyObject? = nil, segueClass: UIStoryboardSegue.Type) {
-    guard let url = NSURL(string: urlString)
+  open func perform(_ urlString: String, sender: AnyObject? = nil, segueClass: UIStoryboardSegue.Type) {
+    guard let url = URL(string: urlString)
       else { return }
     
     self.perform(url, sender: sender, segueClass: segueClass)
@@ -154,7 +154,7 @@ public class Router {
    
    - parameter sender: The object that you want to use to initiate the segue. If nil then the source of Segue if the top visible UIViewController.
    */
-  public func perform(url:NSURL, sender: AnyObject? = nil) {
+  open func perform(_ url:URL, sender: AnyObject? = nil) {
   self.perform(url, sender: sender, segueClass: UIStoryboardSegue.self)
   }
   
@@ -172,11 +172,11 @@ public class Router {
    
    - parameter segueClass: the UIStoryboardSegue than you want to use to perform the Segue
    */
-  public func perform(url:NSURL, sender: AnyObject? = nil, segueClass: UIStoryboardSegue.Type) {
+  open func perform(_ url:URL, sender: AnyObject? = nil, segueClass: UIStoryboardSegue.Type) {
     guard
       let host = url.host,
-      let path = url.path?.stringByReplacingOccurrencesOfString("/", withString: ""),
-      let fragment = url.fragment?.lowercaseString
+      let path = url.path.replacingOccurrences(of: "/", with: ""),
+      let fragment = url.fragment?.lowercased()
       else { return }
     
     self.perform(segueIdentifier:url.absoluteString, storyboardName:host, viewControllerIdentifier:path, sender:sender, kindOfSegue: KindOfSegue(rawValue:fragment)!, segueClass:segueClass)
@@ -192,7 +192,7 @@ public class Router {
    
    - parameter sender: The object that you want to use to initiate the segue. If nil then the source of Segue if the top visible UIViewController.
    */
-  public func perform(route:RouteType, sender: AnyObject? = nil) {
+  open func perform(_ route:RouteType, sender: AnyObject? = nil) {
     self.perform(route, sender: sender, segueClass: UIStoryboardSegue.self)
   }
   
@@ -206,7 +206,7 @@ public class Router {
    
    - parameter segueClass: the UIStoryboardSegue than you want to use to perform the Segue
    */
-  public func perform(route:RouteType, sender: AnyObject? = nil, segueClass: UIStoryboardSegue.Type) {
+  open func perform(_ route:RouteType, sender: AnyObject? = nil, segueClass: UIStoryboardSegue.Type) {
     self.perform(segueIdentifier:route.identifier, storyboardName:route.storyboardName, viewControllerIdentifier:route.viewControllerIdentifier, sender:sender, kindOfSegue: route.kindOfSegue, segueClass:segueClass)
   }
   
@@ -219,13 +219,13 @@ public class Router {
    
    - returns: the founded UIViewController. if nil then no UIViewController is available and the Segue will not be performed.
    */
-  private func getSourceViewController(sender:AnyObject?) -> UIViewController? {
+  fileprivate func getSourceViewController(_ sender:AnyObject?) -> UIViewController? {
     if let sender = sender as? UIViewController {
       return sender
     }
       
     guard
-      let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate,
+      let appDelegate = UIApplication.shared.delegate as? AppDelegate,
       let window = appDelegate.window
       else { return nil }
     
@@ -247,7 +247,7 @@ public class Router {
    
    - returns: instance of UIStoryboardSegue.Type.
    */
-  private func createSegue(identifier identifier: String, source: UIViewController, destination: UIViewController, kindOfSegue:KindOfSegue, segueClass: UIStoryboardSegue.Type) -> UIStoryboardSegue{
+  fileprivate func createSegue(identifier: String, source: UIViewController, destination: UIViewController, kindOfSegue:KindOfSegue, segueClass: UIStoryboardSegue.Type) -> UIStoryboardSegue{
     
     if  segueClass == UIStoryboardSegue.self {
       return segueClass.init(identifier: identifier, source: source, destination: destination, performHandler: {
@@ -255,7 +255,7 @@ public class Router {
         case .Push:
           source.navigationController?.pushViewController(destination, animated: true)
         case .Modal:
-          source.presentViewController(destination, animated: true, completion: nil)
+          source.present(destination, animated: true, completion: nil)
           
         default:()
         }
@@ -278,17 +278,17 @@ public class Router {
    
    - parameter segueClass: The UIStoryboardSegue.Type of the instantiate Segue.
    */
-  public func perform(segueIdentifier segueIdentifier:String, storyboardName:String, viewControllerIdentifier:String, sender: AnyObject?, kindOfSegue:KindOfSegue, segueClass: UIStoryboardSegue.Type) {
+  open func perform(segueIdentifier:String, storyboardName:String, viewControllerIdentifier:String, sender: AnyObject?, kindOfSegue:KindOfSegue, segueClass: UIStoryboardSegue.Type) {
     
     guard let source = self.getSourceViewController(sender)
       else { return }
     
     let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
-    let destination = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier)
+    let destination = storyboard.instantiateViewController(withIdentifier: viewControllerIdentifier)
     
     let segue = self.createSegue(identifier: segueIdentifier, source: source, destination: destination, kindOfSegue: kindOfSegue, segueClass: segueClass)
     
-    source.prepareForSegue(segue, sender: source)
+    source.prepare(for: segue, sender: source)
     segue.perform()
   }
   
