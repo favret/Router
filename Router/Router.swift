@@ -97,6 +97,10 @@ public class Router {
     case Custom = "custom"
   }
 
+  public init() {
+    
+  }
+
   //Router://preparation/preparationDetailsViewController#push
 
   // MARK: - perform with URL
