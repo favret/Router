@@ -175,9 +175,10 @@ open class Router {
   open func perform(_ url:URL, sender: AnyObject? = nil, segueClass: UIStoryboardSegue.Type) {
     guard
       let host = url.host,
-      let path = url.path.replacingOccurrences(of: "/", with: ""),
       let fragment = url.fragment?.lowercased()
       else { return }
+    
+    let path = url.path.replacingOccurrences(of: "/", with: "")
     
     self.perform(segueIdentifier:url.absoluteString, storyboardName:host, viewControllerIdentifier:path, sender:sender, kindOfSegue: KindOfSegue(rawValue:fragment)!, segueClass:segueClass)
   }
@@ -223,13 +224,13 @@ open class Router {
     if let sender = sender as? UIViewController {
       return sender
     }
-      
-    guard
-      let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-      let window = appDelegate.window
+    
+    let appDelegate = UIApplication.shared.delegate! as UIApplicationDelegate
+    
+    guard let window = appDelegate.window
       else { return nil }
     
-    return window.visibleViewController()
+    return window?.visibleViewController()
   }
   
   /**
