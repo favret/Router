@@ -98,7 +98,7 @@ public class Router {
   }
 
   public init() {
-    
+
   }
 
   //Router://preparation/preparationDetailsViewController#push
@@ -180,10 +180,11 @@ public class Router {
     guard
       let host = url.host,
       let path = url.path?.stringByReplacingOccurrencesOfString("/", withString: ""),
-      let fragment = url.fragment?.lowercaseString
+      let fragment = url.fragment?.lowercaseString,
+      let identifier = url.absoluteString
       else { return }
 
-    self.perform(segueIdentifier:url.absoluteString, storyboardName:host, viewControllerIdentifier:path, sender:sender, kindOfSegue: KindOfSegue(rawValue:fragment)!, segueClass:segueClass)
+    self.perform(segueIdentifier: identifier, storyboardName:host, viewControllerIdentifier:path, sender:sender, kindOfSegue: KindOfSegue(rawValue:fragment)!, segueClass:segueClass)
   }
 
   // MARK: - perform with route
