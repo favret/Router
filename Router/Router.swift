@@ -96,7 +96,11 @@ open class Router {
     case Modal = "modal"
     case Custom = "custom"
   }
-  
+ 
+  public init() {
+    
+  }
+ 
   //router://preparation/preparationDetailsViewController#push
   
   // MARK: - perform with URL
