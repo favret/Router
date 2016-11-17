@@ -117,6 +117,10 @@ public class MyRouter: Router {
     case SecondRoute = "route://Main/secondViewController#push"
     case ThirdRoute = "route://Main/thirdViewController#modal"
  }
+ 
+ public func perform(route: Routes, sender: AnyObject? = nil) {
+   self.perform(route.rawValue, sender: sender)
+ }
 }
 
 . . .
