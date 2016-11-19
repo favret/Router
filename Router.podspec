@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Router"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "Declare Segue without storyboard. Use syntax of generic URIs."
 
   #s.description  = <<-DESC
