@@ -24,7 +24,7 @@ platform :ios, '9.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-  pod 'Router', :git => 'https://github.com/favret/Router.git', :tag => '1.0.0'
+  pod 'Router', :git => 'https://github.com/favret/Router.git', :tag => '1.0.2'
 end
 ```
 
