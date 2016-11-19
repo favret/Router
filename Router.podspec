@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/favret/Router"
 
   #s.license      = "MIT (example)"
-  s.license      = 'MIT'
+  s.license      = { :type => 'MIT', :file => 'MIT-LICENSE.txt' }
 
   s.author             = { "favre" => "" }
   # Or just: s.author    = "favre"
