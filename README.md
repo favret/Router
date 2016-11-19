@@ -48,7 +48,7 @@ $ brew install carthage
 To integrate Router into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "favret/Router" => 1.0.0
+github "favret/Router" => 1.0.2
 ```
 
 Run `carthage update` to build the framework and drag the built `Router.framework` into your Xcode project.
